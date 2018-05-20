@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">PopularMovies</string>
     <string name="action_settings">Settings</string>
+    
+    <string name="no_connection">Can\'t connect.</string>
+    
+    <string name="action_sortByMostPopular">Most Popular</string>
+    <string name="action_sortByHighestRated">Highest Rated</string>
+
 </resources>
