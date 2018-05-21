@@ -11,7 +11,7 @@ import java.util.List;
 public class JSONUtils {
 
     private static final String ORIGINAL_TITLE = "original_title";
-    private static final String IMAGE_THUMBNAIL = "backdrop_path";
+    private static final String IMAGE_THUMBNAIL = "poster_path";
     private static final String OVERVIEW = "overview";
     private static final String USER_RATING = "vote_average";
     private static final String RELEASE_DATE = "release_date";

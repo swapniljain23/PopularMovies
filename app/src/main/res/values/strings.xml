@@ -7,4 +7,6 @@
     <string name="action_sortByMostPopular">Most Popular</string>
     <string name="action_sortByHighestRated">Highest Rated</string>
 
+    <string name="movie_thumbnail_description">Movie Thumbnail</string>
+
 </resources>
