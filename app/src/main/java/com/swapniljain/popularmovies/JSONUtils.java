@@ -11,7 +11,8 @@ import java.util.List;
 public class JSONUtils {
 
     private static final String ORIGINAL_TITLE = "original_title";
-    private static final String IMAGE_THUMBNAIL = "poster_path";
+    private static final String POSTER_PATH = "poster_path";
+    private static final String BACKDROP_PATH = "backdrop_path";
     private static final String OVERVIEW = "overview";
     private static final String USER_RATING = "vote_average";
     private static final String RELEASE_DATE = "release_date";
@@ -29,8 +30,11 @@ public class JSONUtils {
                 String title = object.getString(ORIGINAL_TITLE);
                 movie.setOriginalTitle(title);
 
-                String imageThumbnail = object.getString(IMAGE_THUMBNAIL);
-                movie.setImageThumbnail(imageThumbnail);
+                String posterPath = object.getString(POSTER_PATH);
+                movie.setPosterPath(posterPath);
+
+                String backdropPath = object.getString(BACKDROP_PATH);
+                movie.setBackdropPath(backdropPath);
 
                 String overview = object.getString(OVERVIEW);
                 movie.setOverview(overview);

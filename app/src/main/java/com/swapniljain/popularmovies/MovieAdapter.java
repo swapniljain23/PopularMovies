@@ -41,7 +41,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public void onBindViewHolder(@NonNull MovieAdapter.MovieViewHolder holder, int position) {
         Movie movieObj = mMovieList.get(position);
         // Set the image here.
-        Picasso.get().load("https://image.tmdb.org/t/p/w500" + movieObj.getImageThumbnail()).into(holder.movieThumbnailImageView);
+        Picasso.get()
+                .load("https://image.tmdb.org/t/p/w185" + movieObj.getPosterPath())
+                .into(holder.movieThumbnailImageView);
     }
 
     @Override
