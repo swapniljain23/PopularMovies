@@ -1,6 +1,9 @@
 package com.swapniljain.popularmovies;
 
-public class Movie {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Movie implements Parcelable {
 
     private String originalTitle;
     private String posterPath;
@@ -27,6 +30,14 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
+    private Movie(Parcel in) {
+        originalTitle = in.readString();
+        posterPath = in.readString();
+        backdropPath = in.readString();
+        overview = in.readString();
+        userRating = in.readString();
+        releaseDate = in.readString();
+    }
     @Override
     public String toString() {
         return "Original Title: " + originalTitle +
@@ -36,6 +47,30 @@ public class Movie {
                 "User Rating: " + userRating +
                 "Release Date: " + releaseDate + "\n";
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(originalTitle);
+        dest.writeString(posterPath);
+        dest.writeString(backdropPath);
+        dest.writeString(overview);
+        dest.writeString(userRating);
+        dest.writeString(releaseDate);
+    }
+
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        public Movie createFromParcel(Parcel parcel) {
+            return new Movie(parcel);
+        }
+        public Movie[] newArray(int i) {
+            return new Movie[i];
+        }
+    };
 
     public String getOriginalTitle() {
         return originalTitle;

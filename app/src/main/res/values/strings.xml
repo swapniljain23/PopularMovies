@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">PopularMovies</string>
     <string name="action_settings">Settings</string>
-    
+
     <string name="no_connection">Can\'t connect. Check your connection.</string>
     <string name="error_message">Couldn\'t load data. Please try again.</string>
 
@@ -9,5 +9,13 @@
     <string name="action_sortByHighestRated">Highest Rated</string>
 
     <string name="movie_thumbnail_description">Movie Thumbnail</string>
+    <string name="movie_poster_description">Movie Poster</string>
+
+    <string name="rating">Avg. Rating:</string>
+    <string name="summary">Summary:</string>
+    <string name="date">Release Date:</string>
+
+    <string name="content_desc">Image</string>
+
 
 </resources>

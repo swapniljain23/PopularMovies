@@ -1,9 +1,11 @@
 package com.swapniljain.popularmovies;
 
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -125,10 +127,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if (mOnClickToast != null) {
             mOnClickToast.cancel();
         }
-        String toastMessage = "Movie item #" + ++clickedMovieItemPosition + " clicked.";
-        mOnClickToast = Toast.makeText(getApplicationContext(),toastMessage,Toast.LENGTH_LONG);
-        mOnClickToast.setText(toastMessage);
-        mOnClickToast.show();
+
+        // Create an intent and start activity.
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        intent.putExtra("MovieObject", (Parcelable) mMovieList.get(clickedMovieItemPosition));
+
+        startActivity(intent);
     }
 
     /// AsyncTask to fetch movies.
