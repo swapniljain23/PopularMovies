@@ -6,13 +6,10 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,11 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Context;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,10 +35,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private List<Movie> mMovieList = new ArrayList<>();
 
     //
-    private Toast mOnClickToast;
     private ProgressBar mLoadingIndicator;
     private TextView mErrorMessageTextView;
     private TextView mNoConnectionTextView;
+    private Toast mNoConnectionToast;
 
     /// Life cycle methods.
     @Override
@@ -67,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             new MovieTask().execute(NetworkUtils.buildURL(SORT_PREFERENCE_POPULAR));
         } else {
             mNoConnectionTextView.setVisibility(View.VISIBLE);
+            showNoConnectionToast();
         }
     }
 
@@ -82,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
+        return netInfo != null && netInfo.isConnected();
     }
 
     /// Recycler view stuff.
@@ -95,6 +88,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mMovieRecyclerView.setAdapter(mMovieAdapter);
     }
 
+    /// Show
+    private void showNoConnectionToast() {
+        if(mNoConnectionToast != null) {
+            mNoConnectionToast.cancel();
+        }
+
+        mNoConnectionToast = Toast.makeText(this, R.string.no_connection, Toast.LENGTH_LONG);
+        mNoConnectionToast.show();
+    }
+
     /// Menu item selection.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -105,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         if (!isOnline()) {
             mNoConnectionTextView.setVisibility(View.VISIBLE);
+            showNoConnectionToast();
             return true;
         }
         mNoConnectionTextView.setVisibility(View.INVISIBLE);
@@ -124,10 +128,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     /// MovieItemClickListener implementation.
     @Override
     public void onListItemClick(int clickedMovieItemPosition) {
-        if (mOnClickToast != null) {
-            mOnClickToast.cancel();
-        }
-
         // Create an intent and start activity.
         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
         intent.putExtra("MovieObject", (Parcelable) mMovieList.get(clickedMovieItemPosition));
