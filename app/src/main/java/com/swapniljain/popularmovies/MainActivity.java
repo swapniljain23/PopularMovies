@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         // Load data.
         if (isOnline()) {
             mNoConnectionTextView.setVisibility(View.INVISIBLE);
-            new MovieTask().execute(NetworkUtils.buildURL(SORT_PREFERENCE_POPULAR));
+            new MovieTask().execute(NetworkUtils.buildMovieListURL(SORT_PREFERENCE_POPULAR));
         } else {
             mNoConnectionTextView.setVisibility(View.VISIBLE);
             showNoConnectionToast();
@@ -115,10 +115,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_sortByMostPopular) {
-            new MovieTask().execute(NetworkUtils.buildURL(SORT_PREFERENCE_POPULAR));
+            new MovieTask().execute(NetworkUtils.buildMovieListURL(SORT_PREFERENCE_POPULAR));
             return true;
         } else if (id == R.id.action_sortByHighestRated) {
-            new MovieTask().execute(NetworkUtils.buildURL(SORT_PREFERENCE_TOP_RATED));
+            new MovieTask().execute(NetworkUtils.buildMovieListURL(SORT_PREFERENCE_TOP_RATED));
             return true;
         }
 
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             URL movieUrl = urls[0];
             String movies = null;
             try {
-                movies = NetworkUtils.getMovieList(movieUrl);
+                movies = NetworkUtils.getMovieData(movieUrl);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

@@ -1,14 +1,18 @@
 package com.swapniljain.popularmovies;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
+
+import java.net.URL;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -42,5 +46,32 @@ public class DetailActivity extends AppCompatActivity {
         avgRatingTextView.setText(movieObj.getUserRating());
         releaseDateTextView.setText(movieObj.getReleaseDate());
 
+        new MovieTask().execute(NetworkUtils.buildMovieDetailURL(movieObj.getMovieID(), "reviews"));
+        new MovieTask().execute(NetworkUtils.buildMovieDetailURL(movieObj.getMovieID(), "videos"));
+    }
+
+    /// AsyncTask to fetch movies.
+    public class MovieTask extends AsyncTask<URL, Void, String> {
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected String doInBackground(URL... urls) {
+            URL movieUrl = urls[0];
+            String response = null;
+            try {
+                response = NetworkUtils.getMovieData(movieUrl);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+
+        }
     }
 }

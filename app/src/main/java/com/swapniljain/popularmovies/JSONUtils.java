@@ -10,6 +10,7 @@ import java.util.List;
 
 public class JSONUtils {
 
+    private static final String MOVIE_ID = "id";
     private static final String ORIGINAL_TITLE = "original_title";
     private static final String POSTER_PATH = "poster_path";
     private static final String BACKDROP_PATH = "backdrop_path";
@@ -26,6 +27,9 @@ public class JSONUtils {
             for (int index = 0; index < jsonArray.length(); index++) {
                 JSONObject object = jsonArray.getJSONObject(index);
                 Movie movie = new Movie();
+
+                String movidID = object.getString(MOVIE_ID);
+                movie.setMovieID(movidID);
 
                 String title = object.getString(ORIGINAL_TITLE);
                 movie.setOriginalTitle(title);
