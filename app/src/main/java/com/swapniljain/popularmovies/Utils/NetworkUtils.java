@@ -1,4 +1,4 @@
-package com.swapniljain.popularmovies;
+package com.swapniljain.popularmovies.Utils;
 
 import android.net.Uri;
 import android.util.Log;
@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class NetworkUtils {
 
     private final static String MOVIE_URL = "https://api.themoviedb.org/3/movie/";
-    private final static String API_KEY = "48251e830f06126f3af569422672a6c1";
+    private final static String API_KEY = "";
 
     /// Build url with the sort preference.
     public static URL buildMovieListURL(String sortPreference) {

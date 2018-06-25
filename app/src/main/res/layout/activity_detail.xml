@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailActivity">
+    tools:context=".Activity.DetailActivity">
 
     <TextView
         android:id="@+id/tv_movie_title"
@@ -94,6 +94,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/trailer"
+                android:textStyle="bold"
+                android:textColor="@color/darkYellow"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/trailerRecyclerView"
+                android:paddingLeft="8dp">
+
+            </android.support.v7.widget.RecyclerView>
+
         </LinearLayout>
     </ScrollView>
 

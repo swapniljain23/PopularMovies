@@ -1,4 +1,4 @@
-package com.swapniljain.popularmovies;
+package com.swapniljain.popularmovies.Utils;
 
 import android.util.Log;
 
@@ -7,6 +7,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.swapniljain.popularmovies.Model.Movie;
+import com.swapniljain.popularmovies.Model.Trailer;
+import com.swapniljain.popularmovies.Model.Review;
 
 public class JSONUtils {
 
@@ -17,6 +21,13 @@ public class JSONUtils {
     private static final String OVERVIEW = "overview";
     private static final String USER_RATING = "vote_average";
     private static final String RELEASE_DATE = "release_date";
+
+    private static final String VIDEO_KEY = "key";
+    private static final String VIDEO_NAME = "name";
+    private static final String VIDEO_TYPE = "type";
+
+    private static final String REVIEW_AUTHOR = "author";
+    private static final String REVIEW_DETAIL = "content";
 
     public static List<Movie> parseMovieJSON(String json) {
         List<Movie> movieList = new ArrayList<>();
@@ -58,5 +69,45 @@ public class JSONUtils {
             ex.printStackTrace();
         }
         return movieList;
+    }
+
+    public static List<Trailer> parseMovieTrailers(String json) {
+        List<Trailer> trailerList = new ArrayList<>();
+
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray jsonArray = jsonObject.getJSONArray("results");
+
+            for (int index = 0; index < jsonArray.length(); index++) {
+                JSONObject object = jsonArray.getJSONObject(index);
+                Trailer trailer = new Trailer();
+                trailer.setKey(object.getString(VIDEO_KEY));
+                trailer.setName(object.getString(VIDEO_NAME));
+                trailer.setType(object.getString(VIDEO_TYPE));
+                trailerList.add(trailer);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return trailerList;
+    }
+
+    public static List<Review> parseMovieReviews(String json) {
+        List<Review> reviewList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray jsonArray = jsonObject.getJSONArray("results");
+
+            for (int index = 0; index < jsonArray.length(); index++) {
+                JSONObject object = jsonArray.getJSONObject(index);
+                Review review = new Review();
+                review.setAuthor(object.getString(REVIEW_AUTHOR));
+                review.setDetail(object.getString(REVIEW_DETAIL));
+                reviewList.add(review);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return reviewList;
     }
 }

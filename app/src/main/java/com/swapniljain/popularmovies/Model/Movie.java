@@ -1,5 +1,6 @@
-package com.swapniljain.popularmovies;
+package com.swapniljain.popularmovies.Model;
 
+import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -12,6 +13,8 @@ public class Movie implements Parcelable {
     private String overview;
     private String userRating;
     private String releaseDate;
+    private List<Trailer> trailers;
+    private List<Review> reviews;
 
     public Movie() {
 
@@ -122,4 +125,11 @@ public class Movie implements Parcelable {
 
     public void setBackdropPath(String backdropPath) { this.backdropPath = backdropPath; }
 
+    public List<Trailer> getTrailers() { return trailers; }
+
+    public void setTrailers(List<Trailer> trailers) { this.trailers = trailers; }
+
+    public List<Review> getReviews() { return reviews; }
+
+    public void setReviews(List<Review> reviews) { this.reviews = reviews; }
 }

@@ -1,4 +1,4 @@
-package com.swapniljain.popularmovies;
+package com.swapniljain.popularmovies.Activity;
 
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -17,6 +17,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Context;
+
+import com.swapniljain.popularmovies.Model.Movie;
+import com.swapniljain.popularmovies.R;
+import com.swapniljain.popularmovies.Utils.JSONUtils;
+import com.swapniljain.popularmovies.Utils.MovieAdapter;
+import com.swapniljain.popularmovies.Utils.NetworkUtils;
 
 import java.net.URL;
 import java.util.ArrayList;

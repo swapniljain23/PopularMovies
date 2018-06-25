@@ -1,4 +1,4 @@
-package com.swapniljain.popularmovies;
+package com.swapniljain.popularmovies.Utils;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.view.View;
 
 import com.squareup.picasso.Picasso;
+import com.swapniljain.popularmovies.Model.Movie;
+import com.swapniljain.popularmovies.R;
 
 import java.util.List;
 
