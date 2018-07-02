@@ -13,8 +13,6 @@ import android.widget.TextView;
 import com.swapniljain.popularmovies.Model.Trailer;
 import com.swapniljain.popularmovies.R;
 
-import org.w3c.dom.Text;
-
 public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapter.MovieTrailerViewHolder> {
 
     private List<Trailer> mMovieTrailerList;

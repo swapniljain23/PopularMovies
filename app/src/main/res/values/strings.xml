@@ -12,11 +12,14 @@
     <string name="movie_thumbnail_description">Movie Thumbnail</string>
     <string name="movie_poster_description">Movie Poster</string>
 
+    <string name="title">Title:</string>
     <string name="rating">Avg. Rating:</string>
     <string name="summary">Summary:</string>
-    <string name="date">Release Date:</string>
+    <string name="release_date">Release Date:</string>
     <string name="trailer">Trailers:</string>
+    <string name="reviews">Reviews:</string>
 
     <string name="content_desc">Image</string>
+    <string name="add_to_favorite">Add to favorite</string>
 
 </resources>

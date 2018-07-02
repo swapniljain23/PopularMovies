@@ -19,6 +19,7 @@ import com.swapniljain.popularmovies.Model.Trailer;
 import com.swapniljain.popularmovies.R;
 import com.swapniljain.popularmovies.Utils.JSONUtils;
 import com.swapniljain.popularmovies.Utils.MovieAdapter;
+import com.swapniljain.popularmovies.Utils.MovieReviewAdapter;
 import com.swapniljain.popularmovies.Utils.MovieTrailerAdapter;
 import com.swapniljain.popularmovies.Utils.NetworkUtils;
 
@@ -30,6 +31,8 @@ public class DetailActivity extends AppCompatActivity
 
     private MovieTrailerAdapter mMovieTrailerAdapter;
     private RecyclerView mMovieTrailerRecyclerView;
+    private MovieReviewAdapter mMovieReviewAdapter;
+    private RecyclerView mMovieReviewsRecyclerView;
 
     Movie mMovieObject;
 
@@ -42,7 +45,7 @@ public class DetailActivity extends AppCompatActivity
         TextView titleTextView = findViewById(R.id.tv_movie_title);
         TextView overviewTextView = findViewById(R.id.tv_movie_desc);
         TextView avgRatingTextView = findViewById(R.id.tv_movie_rating);
-        TextView releaseDateTextView = findViewById(R.id.tv_movie_date);
+        TextView releaseDateTextView = findViewById(R.id.tv_movie_release_date);
 
         Intent parentIntent = getIntent();
 
@@ -69,12 +72,22 @@ public class DetailActivity extends AppCompatActivity
 
     /// Setup movie trailer recycler view.
     private void setupMovieTrailerRecyclerView() {
-        mMovieTrailerRecyclerView = (RecyclerView) findViewById(R.id.trailerRecyclerView);
+        mMovieTrailerRecyclerView = (RecyclerView) findViewById(R.id.rv_movie_trailers);
         mMovieTrailerRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mMovieTrailerRecyclerView.setLayoutManager(layoutManager);
         mMovieTrailerAdapter =  new MovieTrailerAdapter(mMovieObject.getTrailers(), this);
         mMovieTrailerRecyclerView.setAdapter(mMovieTrailerAdapter);
+    }
+
+    /// Setup movie reviews recycler view.
+    private void setupMovieReviewsRecyclerView() {
+        mMovieReviewsRecyclerView = (RecyclerView) findViewById(R.id.rv_movie_reviews);
+        mMovieReviewsRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mMovieReviewsRecyclerView.setLayoutManager(layoutManager);
+        mMovieReviewAdapter =  new MovieReviewAdapter(mMovieObject.getReviews());
+        mMovieReviewsRecyclerView.setAdapter(mMovieReviewAdapter);
     }
 
     /// AsyncTask to fetch Trailers.
@@ -124,7 +137,7 @@ public class DetailActivity extends AppCompatActivity
                 mMovieObject.setReviews(JSONUtils.parseMovieReviews(response));
 
                 // Populate UI.
-
+                setupMovieReviewsRecyclerView();
             } else {
                 // Handle null response here.
             }

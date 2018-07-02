@@ -1,9 +1,12 @@
 package com.swapniljain.popularmovies.Model;
 
 import java.util.List;
+
+import android.arch.persistence.room.Entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+@Entity(tableName = "movie")
 public class Movie implements Parcelable {
 
     private String movieID;
