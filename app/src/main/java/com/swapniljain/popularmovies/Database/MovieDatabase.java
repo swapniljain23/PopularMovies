@@ -20,13 +20,11 @@ public abstract class MovieDatabase extends RoomDatabase {
         // first time if the sInstance is null then create a sInstance
         if (sharedInstance == null){
             synchronized (LOCK){
-                Log.d(TAG, "First time creating sInstance");
                 sharedInstance = Room.databaseBuilder(context.getApplicationContext(),MovieDatabase.class, MovieDatabase.DATABASE_NAME)
                         .allowMainThreadQueries()
                         .build();
             }
         }
-        Log.d(TAG, "Getting the sInstance");
         return sharedInstance;
     }
     public abstract MovieDAO movieDAO();

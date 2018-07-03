@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     // Data model.
     private List<Movie> mMovieList = new ArrayList<>();
 
-    //
+    // Views.
     private ProgressBar mLoadingIndicator;
     private TextView mErrorMessageTextView;
     private TextView mNoConnectionTextView;
@@ -57,20 +57,23 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     /// Life cycle methods.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("onCreate","onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        if (savedInstanceState != null && savedInstanceState.containsKey(MOVIE_LIST_KEY)){
-            mMovieList = savedInstanceState.getParcelableArrayList(MOVIE_LIST_KEY);
-        }
 
         // Loading indicator, text view stuff.
         mLoadingIndicator = (ProgressBar)findViewById(R.id.loading_indicator);
         mErrorMessageTextView = (TextView)findViewById(R.id.error_message_text_view);
         mNoConnectionTextView = (TextView)findViewById(R.id.no_connection_text_view);
         mMovieRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(MOVIE_LIST_KEY)){
+            mMovieList = savedInstanceState.getParcelableArrayList(MOVIE_LIST_KEY);
+            setupRecyclerView();
+            return;
+        }
 
         // Load data.
         if (isOnline()) {
@@ -111,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if(mNoConnectionToast != null) {
             mNoConnectionToast.cancel();
         }
-
         mNoConnectionToast = Toast.makeText(this, R.string.no_connection, Toast.LENGTH_LONG);
         mNoConnectionToast.show();
     }

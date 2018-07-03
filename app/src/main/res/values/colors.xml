@@ -9,12 +9,6 @@
     <color name="colorBlue">#328bba</color>
     <color name="colorGreen">#135e65</color>
     <color name="darkYellow">#b0930d</color>
-
-    <!--<color name="colorPrimary">#b40825</color>-->
-    <!--<color name="colorPrimaryDark">#830023</color>-->
-    <!--<color name="colorAccent">#D81B60</color>-->
-    <color name="Header">#a92424</color>
-    <color name="font">#790c0c</color>
     <color name="link">#004fed</color>
 
 </resources>
