@@ -14,20 +14,20 @@ public abstract class MovieDatabase extends RoomDatabase {
     private static final String TAG = Database.class.getSimpleName();
     private static final Object LOCK = new Object();
     private static final String DATABASE_NAME = "FavoriteMovies";
-    private static MovieDatabase sInstance;
+    private static MovieDatabase sharedInstance;
 
-    public static MovieDatabase getsInstance(Context context){
+    public static MovieDatabase getSharedInstance(Context context){
         // first time if the sInstance is null then create a sInstance
-        if (sInstance == null){
+        if (sharedInstance == null){
             synchronized (LOCK){
                 Log.d(TAG, "First time creating sInstance");
-                sInstance = Room.databaseBuilder(context.getApplicationContext(),MovieDatabase.class, MovieDatabase.DATABASE_NAME)
+                sharedInstance = Room.databaseBuilder(context.getApplicationContext(),MovieDatabase.class, MovieDatabase.DATABASE_NAME)
                         .allowMainThreadQueries()
                         .build();
             }
         }
         Log.d(TAG, "Getting the sInstance");
-        return sInstance;
+        return sharedInstance;
     }
     public abstract MovieDAO movieDAO();
 

@@ -3,12 +3,16 @@ package com.swapniljain.popularmovies.Model;
 import java.util.List;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 @Entity(tableName = "movie")
 public class Movie implements Parcelable {
 
+    @NonNull
+    @PrimaryKey
     private String movieID;
     private String originalTitle;
     private String posterPath;
@@ -16,8 +20,8 @@ public class Movie implements Parcelable {
     private String overview;
     private String userRating;
     private String releaseDate;
-    private List<Trailer> trailers;
-    private List<Review> reviews;
+    transient private List<Trailer> trailers;
+    transient private List<Review> reviews;
 
     public Movie() {
 

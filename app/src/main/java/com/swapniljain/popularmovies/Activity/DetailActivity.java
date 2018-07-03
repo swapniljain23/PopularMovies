@@ -9,11 +9,17 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.content.SharedPreferences;
+import android.content.Context;
 
 import com.squareup.picasso.Picasso;
+import com.swapniljain.popularmovies.Database.DatabaseExecutors;
+import com.swapniljain.popularmovies.Database.MovieDatabase;
 import com.swapniljain.popularmovies.Model.Movie;
 import com.swapniljain.popularmovies.Model.Trailer;
 import com.swapniljain.popularmovies.R;
@@ -29,11 +35,19 @@ import java.net.URL;
 public class DetailActivity extends AppCompatActivity
         implements MovieTrailerAdapter.MovieTrailerClickListener {
 
+    // Views.
     private MovieTrailerAdapter mMovieTrailerAdapter;
     private RecyclerView mMovieTrailerRecyclerView;
     private MovieReviewAdapter mMovieReviewAdapter;
     private RecyclerView mMovieReviewsRecyclerView;
+    private Button mFavoriteButton;
 
+    // DB stuff.
+    private SharedPreferences mSharedPreference;
+    private MovieDatabase mMovieDatabase;
+    private static final String FAVORITE_MOVIES = "favorite_movies";
+
+    // Model object.
     Movie mMovieObject;
 
     @Override
@@ -41,18 +55,37 @@ public class DetailActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        // Get shared preference.
+        mSharedPreference = getApplicationContext().getSharedPreferences(FAVORITE_MOVIES,Context.MODE_PRIVATE);
+
+        // Setup database.
+        mMovieDatabase = MovieDatabase.getSharedInstance(getApplicationContext());
+
+        // Find views by Id.
         ImageView imageView = findViewById(R.id.movieBackdrop);
         TextView titleTextView = findViewById(R.id.tv_movie_title);
         TextView overviewTextView = findViewById(R.id.tv_movie_desc);
         TextView avgRatingTextView = findViewById(R.id.tv_movie_rating);
         TextView releaseDateTextView = findViewById(R.id.tv_movie_release_date);
 
-        Intent parentIntent = getIntent();
+        // Find favorite button by id and set on click listener.
+        mFavoriteButton = findViewById(R.id.btn_favorite);
+        mFavoriteButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = mSharedPreference.edit();
+                if (mFavoriteButton.getText().toString().equals(getString(R.string.add_to_favorite))){
+                    addToFavorite(editor);
+                }else if (mFavoriteButton.getText().toString().equals(getString(R.string.remove_from_favorite))){
+                    removeFromFavorite(editor);
+                }
+            }
+        });
 
+        Intent parentIntent = getIntent();
         if (!parentIntent.hasExtra("MovieObject")) {
             return;
         }
-
         mMovieObject = (Movie) parentIntent.getParcelableExtra("MovieObject");
 
         // Set the image here.
@@ -65,6 +98,11 @@ public class DetailActivity extends AppCompatActivity
         overviewTextView.setText(mMovieObject.getOverview());
         avgRatingTextView.setText(mMovieObject.getUserRating());
         releaseDateTextView.setText(mMovieObject.getReleaseDate());
+        if (mSharedPreference.contains(mMovieObject.getOriginalTitle())) {
+            mFavoriteButton.setText(R.string.remove_from_favorite);
+        } else {
+            mFavoriteButton.setText(R.string.add_to_favorite);
+        }
 
         new MovieReviewsTask().execute(NetworkUtils.buildMovieDetailURL(mMovieObject.getMovieID(), "reviews"));
         new MovieVideosTask().execute(NetworkUtils.buildMovieDetailURL(mMovieObject.getMovieID(), "videos"));
@@ -157,5 +195,33 @@ public class DetailActivity extends AppCompatActivity
         }
     }
 
+    // Add/Remove faovrites.
+    public void addToFavorite(SharedPreferences.Editor editor){
+        DatabaseExecutors.getSharedInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mMovieDatabase.movieDAO().insertMovie(mMovieObject);
+            }
+        });
+        mFavoriteButton.setText(R.string.remove_from_favorite);
+        editor.putString(mMovieObject.getOriginalTitle(), "true");
+        editor.commit();
+    }
 
+    private void removeFromFavorite(SharedPreferences.Editor editor) {
+        DatabaseExecutors.getSharedInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mMovieDatabase.movieDAO().deleteMovie(mMovieObject);
+            }
+        });
+        mFavoriteButton.setText(R.string.add_to_favorite);
+        editor.remove(mMovieObject.getOriginalTitle());
+        editor.commit();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 }

@@ -8,6 +8,7 @@
 
     <string name="action_sortByMostPopular">Most Popular</string>
     <string name="action_sortByHighestRated">Highest Rated</string>
+    <string name="action_sortByFavorites">Favorites</string>
 
     <string name="movie_thumbnail_description">Movie Thumbnail</string>
     <string name="movie_poster_description">Movie Poster</string>
@@ -21,5 +22,6 @@
 
     <string name="content_desc">Image</string>
     <string name="add_to_favorite">Add to favorite</string>
+    <string name="remove_from_favorite">Remove from favorite</string>
 
 </resources>

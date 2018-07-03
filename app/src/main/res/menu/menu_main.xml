@@ -3,13 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.swapniljain.popularmovies.Activity.MainActivity">
     <item
+        android:id="@+id/action_sortByHighestRated"
+        android:orderInCategory="1"
+        android:title="@string/action_sortByHighestRated"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_sortByMostPopular"
         android:orderInCategory="2"
         android:title="@string/action_sortByMostPopular"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_sortByHighestRated"
-        android:orderInCategory="1"
-        android:title="@string/action_sortByHighestRated"
+        android:id="@+id/action_sortByFavorites"
+        android:orderInCategory="3"
+        android:title="@string/action_sortByFavorites"
         app:showAsAction="never" />
 </menu>

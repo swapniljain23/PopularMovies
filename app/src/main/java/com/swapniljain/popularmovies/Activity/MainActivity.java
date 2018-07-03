@@ -1,15 +1,19 @@
 package com.swapniljain.popularmovies.Activity;
 
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Context;
 
+import com.swapniljain.popularmovies.Database.MovieDatabase;
 import com.swapniljain.popularmovies.Model.Movie;
 import com.swapniljain.popularmovies.R;
 import com.swapniljain.popularmovies.Utils.JSONUtils;
@@ -30,8 +35,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieItemClickListener {
 
-    private final static String SORT_PREFERENCE_POPULAR = "popular";
-    private final static String SORT_PREFERENCE_TOP_RATED = "top_rated";
+    private static final String SORT_PREFERENCE_POPULAR = "popular";
+    private static final String SORT_PREFERENCE_TOP_RATED = "top_rated";
+    private static final String MOVIE_LIST_KEY = "MOVIE_LIST";
 
     // Recycler view.
     private MovieAdapter mMovieAdapter;
@@ -46,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private TextView mNoConnectionTextView;
     private Toast mNoConnectionToast;
 
+    private int mSelectedOptionItemId;
+
     /// Life cycle methods.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +62,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        if (savedInstanceState != null && savedInstanceState.containsKey(MOVIE_LIST_KEY)){
+            mMovieList = savedInstanceState.getParcelableArrayList(MOVIE_LIST_KEY);
+        }
+
         // Loading indicator, text view stuff.
         mLoadingIndicator = (ProgressBar)findViewById(R.id.loading_indicator);
         mErrorMessageTextView = (TextView)findViewById(R.id.error_message_text_view);
         mNoConnectionTextView = (TextView)findViewById(R.id.no_connection_text_view);
+        mMovieRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         // Load data.
         if (isOnline()) {
@@ -86,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     /// Recycler view stuff.
     private void setupRecyclerView() {
-        mMovieRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         mMovieRecyclerView.setLayoutManager(layoutManager);
         mMovieRecyclerView.setHasFixedSize(true);
@@ -111,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        mSelectedOptionItemId = id;
 
         if (!isOnline()) {
             mNoConnectionTextView.setVisibility(View.VISIBLE);
@@ -126,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         } else if (id == R.id.action_sortByHighestRated) {
             new MovieTask().execute(NetworkUtils.buildMovieListURL(SORT_PREFERENCE_TOP_RATED));
             return true;
+        } else if (id == R.id.action_sortByFavorites) {
+            showFavoriteMovies();
         }
 
         return super.onOptionsItemSelected(item);
@@ -174,5 +189,27 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 mErrorMessageTextView.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    /// Fetch favorite movies.
+    public void showFavoriteMovies() {
+        mMovieList.clear();
+        MovieDatabase movieDatabase = MovieDatabase.getSharedInstance(getApplicationContext());
+        movieDatabase.movieDAO().loadAllMovies().observe(this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(@Nullable List<Movie> movies) {
+                if (mSelectedOptionItemId == R.id.action_sortByFavorites) {
+                    mMovieList = movies;
+                    setupRecyclerView();
+                    Log.d("showFavoriteMovies", "OnChanged called.");
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(MOVIE_LIST_KEY, (ArrayList<? extends Parcelable>)mMovieList);
     }
 }
