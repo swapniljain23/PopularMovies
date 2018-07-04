@@ -10,10 +10,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
-public class NetworkUtils {
+public final class NetworkUtils {
 
     private final static String MOVIE_URL = "https://api.themoviedb.org/3/movie/";
     private final static String API_KEY = "";
+
+    private NetworkUtils() {}
 
     /// Build url with the sort preference.
     public static URL buildMovieListURL(String sortPreference) {

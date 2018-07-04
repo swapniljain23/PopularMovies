@@ -4,9 +4,9 @@ import java.util.List;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 
 @Entity(tableName = "movie")
 public class Movie implements Parcelable {
@@ -52,6 +52,7 @@ public class Movie implements Parcelable {
         userRating = in.readString();
         releaseDate = in.readString();
     }
+
     @Override
     public String toString() {
         return  "Movid Id: " + movieID +

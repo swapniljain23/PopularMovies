@@ -48,7 +48,7 @@ public class DetailActivity extends AppCompatActivity
     private static final String FAVORITE_MOVIES = "favorite_movies";
 
     // Model object.
-    Movie mMovieObject;
+    private Movie mMovieObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
